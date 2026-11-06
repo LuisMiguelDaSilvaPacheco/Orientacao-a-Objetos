@@ -23,8 +23,8 @@ class ClienteDAO {
 
         $conexao = Conexao::getConexao();
         $stm = $conexao->prepare($sql);
-        if ($cliente instanceof ClientePF) {
-                $stm->execute(array(
+        if($cliente instanceof ClientePF) {
+            $stm->execute(array(
                 $cliente->getTipo(),
                 $cliente->getNomeSocial(),
                 $cliente->getEmail(),
@@ -32,6 +32,16 @@ class ClienteDAO {
                 $cliente->getCpf(),
                 NULL,
                 NULL
+            ));
+        }elseif($cliente instanceof ClientePJ) {
+            $stm->execute(array(
+                $cliente->getTipo(),
+                $cliente->getNomeSocial(),
+                $cliente->getEmail(),
+                NULL,
+                NULL,
+                $cliente->getRazaoSocial(),
+                $cliente->getCnpj()
             ));
         }
         
@@ -45,7 +55,34 @@ class ClienteDAO {
         $stm->execute();
         $dados = $stm->fetchAll();
 
-        return $dados;
+        $clientes = $this->mapear($dados);
+        return $clientes;
+    }
+
+    private function mapear(array $dados): array{
+        $clientes = array();
+        foreach ($dados as $d) {
+            $tipo = $d['tipo'];
+            $cliente = null;
+            if ($tipo = 'F') {
+                $cliente = new ClientePF();
+                $cliente->setNomeCompleto($d['nomeCompleto']);
+                $cliente->setCpf($d['cpf']);
+            }elseif($tipo = 'J'){
+                $cliente = new ClientePJ();
+                $cliente->setRazaoSocial($d['razaoSocial']);
+                $cliente->setCnpj($d['cnpj']);
+            }else{
+                continue;
+            }
+
+            $cliente->setId($d['id']);
+            $cliente->setNomeSocial($d['nomeSocial']);
+            $cliente->setEmail($d['email']);
+
+            array_push($clientes, $cliente);
+        }
+        return $clientes;
     }
 
 }
