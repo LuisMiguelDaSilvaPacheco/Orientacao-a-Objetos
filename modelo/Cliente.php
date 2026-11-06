@@ -12,6 +12,13 @@ abstract class Cliente {
     public abstract function getNroDoc();
     public abstract function getTipo();
 
+    public function __toString()
+    {
+        $dados = "ID: ". $this->id. "\nTipo: ". $this->getTipo(). "\nNome Social: ". $this->nomeSocial. "\nE-Mail: ". $this->email. "\nNome Completo: ". $this->getNome(). "\nDocumento: ". $this->getNroDoc();
+
+        return $dados;
+    }
+
     //GETs e SETs
     public function getId(): int
     {
