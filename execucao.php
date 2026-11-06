@@ -40,21 +40,24 @@ do {
             $clienteDAO->inserir($clientePF);
             break;
 
-        // case 2:
-        //     //Inserir
-        //     $clientePJ = new ClientePF();
-        //     $clientePJ->setNomeCompleto(readline("Informe o nome completo: "));
-        //     $clientePJ->setNomeSocial(readline("Informe o nome social: "));
-        //     $clientePJ->setCpf(readline("Informe o CPF: "));
-        //     $clientePJ->setEmail(readline("Informe o e-mail: "));
+        case 2:
+            //Inserir
+            $clientePJ = new ClientePJ();
+            $clientePJ->setRazaoSocial(readline("Informe a razão social: "));
+            $clientePJ->setNomeSocial(readline("Informe o nome social: "));
+            $clientePJ->setCnpj(readline("Informe o CNPJ: "));
+            $clientePJ->setEmail(readline("Informe o e-mail: "));
 
-        //     $clienteDAO->inserir($clientePJ);
-        //     break;
+            $clienteDAO->inserir($clientePJ);
+            break;
 
         case 3:
             //Listar
             $clientes = $clienteDAO->listar();
-            print_r($clientes);
+            foreach ($clientes as $c) {
+                printM($c. "\n", 5);
+            }
+            sleep(4);
             break;
 
         case 0:
